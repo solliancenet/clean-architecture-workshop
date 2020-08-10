@@ -22,10 +22,10 @@ Param (
 function InstallGit()
 {
   #download and install git...		
-  $output = "c:\LabFiles\git.exe";
+  $output = "$env:TEMP\git.exe";
   Invoke-WebRequest -Uri https://github.com/git-for-windows/git/releases/download/v2.27.0.windows.1/Git-2.27.0-64-bit.exe -OutFile $output; 
 
-  $productPath = "c:\LabFiles";				
+  $productPath = "$env:TEMP";
   $productExec = "git.exe"	
   $argList = "/SILENT"
   start-process "$productPath\$productExec" -ArgumentList $argList -wait
@@ -47,6 +47,8 @@ function InstallChocolaty()
   iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
 
   $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine")
+
+  choco feature enable -n allowGlobalConfirmation
 }
 
 function InstallFiddler()
@@ -70,10 +72,23 @@ function InstallSmtp4Dev()
   choco install smtp4dev
 }
 
+function InstallDocker()
+{
+    Install-Module -Name DockerMsftProvider -Repository PSGallery -Force;
+    Install-Package -Name docker -ProviderName DockerMsftProvider;
+}
+
 function InstallDotNetCore($version)
 {
-  Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile 'dotnet-install.ps1';
-  ./dotnet-install.ps1 -InstallDir '~/.dotnet' -Version '$version';
+    try
+    {
+        Invoke-WebRequest 'https://dot.net/v1/dotnet-install.ps1' -OutFile 'dotnet-install.ps1';
+        ./dotnet-install.ps1 -Channel $version;
+    }
+    catch
+    {
+        write-host $_.exception.message;
+    }
 }
 
 function InstallVisualStudioCode($AdditionalExtensions)
@@ -236,7 +251,8 @@ InstallAzPowerShellModule
 
 InstallNotepadPP
 
-InstallVisualStudioCode
+$ext = @("ms-vscode.azurecli")
+InstallVisualStudioCode $ext
 
 InstallDotNetCore "3.1"
 
@@ -263,7 +279,6 @@ CreateCredFile $azureUsername $azurePassword $azureTenantID $azureSubscriptionID
 $userName = $AzureUserName                # READ FROM FILE
 $password = $AzurePassword                # READ FROM FILE
 $clientId = $TokenGeneratorClientId       # READ FROM FILE
-$global:sqlPassword = $AzureSQLPassword          # READ FROM FILE
 
 Uninstall-AzureRm
 
@@ -275,12 +290,14 @@ Connect-AzAccount -Credential $cred | Out-Null
 #install sql server cmdlets
 Install-Module -Name SqlServer
 
-# Template deployment
-$rg = Get-AzResourceGroup | Where-Object { $_.ResourceGroupName -like "*-wssecurity" };
-$resourceGroupName = $rg.ResourceGroupName
-$deploymentId =  (Get-AzResourceGroup -Name $resourceGroupName).Tags["DeploymentId"]
+git clone https://github.com/ardalis/CleanArchitecture
 
-git clone https://github.com/ardalis/CleanArchitecture/tree/dotnet-core-3.0
+Rename-Item -Path "c:\LabFiles\CleanArchitecture\CleanArchitecture.sln" -NewName "DDDGuestbook.sln"
 
 sleep 20
+
 Stop-Transcript
+
+Restart-Computer -Force
+
+return 0;
