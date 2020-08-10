@@ -1,0 +1,42 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+        "uniqueSuffix": {
+            "type": "string",
+            "metadata": {
+                "description": "Suffix added to all resource name to make them unique."
+            }
+        },
+        "region": {
+            "type": "string",
+            "metadata": {
+                "description": "Region to deploy too."
+            }
+        },
+        "adminUsername": {
+            "type": "string",
+            "defaultValue": "s2admin",
+            "metadata": {
+                "description": ""
+            }
+        },
+        "adminPassword": {
+            "type": "string",
+            "defaultValue": "Solliance123",
+            "metadata": {
+                "description": ""
+            }
+        },
+        "vmSize": {
+            "defaultValue": "Standard_E2s_v3",
+            "type": "string"
+        }
+  },
+  "variables": {
+      "location": "[resourceGroup().location]"
+  },
+  "resources": [
+      
+  ]
+}
