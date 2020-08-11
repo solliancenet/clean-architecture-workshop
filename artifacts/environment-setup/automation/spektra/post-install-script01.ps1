@@ -301,4 +301,4 @@ Stop-Transcript
 
 Restart-Computer -Force
 
-return 1;
+return 0;
