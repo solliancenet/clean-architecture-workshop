@@ -63,15 +63,18 @@ InstallSmtp4Dev;
 InstallAzureCli;
 
 $vsVersion = "community"
-InstallVisualStudio $vsVersion;
+$year = "2019";
+InstallVisualStudio $vsVersion $year;
 
-UpdateVisualStudio $vsVersion;
+UpdateVisualStudio $vsVersion $year;
 
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.Azure" $true;
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetCoreTools" $true;
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetWeb" $true;
-AddVisualStudioWorkload $vsVersion "Component.GitHub.VisualStudio" $true;
-AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Component.Git" $true;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.Azure";
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetCoreTools" ;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.NetWeb" ;
+AddVisualStudioWorkload $vsVersion "Component.GitHub.VisualStudio";
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Component.Git" ;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.Data" ;
+AddVisualStudioWorkload $vsVersion "Microsoft.VisualStudio.Workload.DataScience" ;
 
 CreateLabFilesDirectory;
 
