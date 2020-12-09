@@ -100,7 +100,7 @@ Install-Module -Name SqlServer
 
 git clone https://github.com/ardalis/CleanArchitecture
 
-Rename-Item -Path "c:\LabFiles\CleanArchitecture\CleanArchitecture.sln" -NewName "DDDGuestbook.sln"
+Rename-Item -Path "c:\LabFiles\CleanArchitecture\Clean.Architecture.sln" -NewName "DDDGuestbook.sln"
 
 sleep 20
 
